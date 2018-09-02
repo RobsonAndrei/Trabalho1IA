@@ -3,9 +3,7 @@ package Negocio;
 public class SacoMoeda {
 	private int value;
 
-	private int xPosition;
-
-	private int yPosition;
+	private int xPosition, yPosition;
 
 	public SacoMoeda(int valor) {
 		this.value = valor;

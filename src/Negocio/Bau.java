@@ -3,9 +3,7 @@ package Negocio;
 public class Bau {
 	private int value;
 	
-	private int xPosition;
-
-	private int yPosition;
+	private int xPosition, yPosition;
 
 	/**
 	 * @param value
