@@ -8,3 +8,4 @@ recolhidas pelo agente. A porta só abre se os baús tiverem a mesma
 quantidade de moedas. Ao longo do percurso, o agente deve pular ou
 desviar buracos, contornar paredes, recolher sacos de moedas, descobrir o
 local da porta e dos baús, e depositar sacos de moedas nesses baús.
+ Alunos Robson Andrei e Tamires Domingues
