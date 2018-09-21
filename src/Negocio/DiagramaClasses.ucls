@@ -3,7 +3,7 @@
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
   <package id="1" language="java" name="Negocio" project="Trabalho1IA" file="/Trabalho1IA/src/Negocio" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="447" width="788" x="115" y="64"/>    
+    <position height="642" width="788" x="109" y="79"/>    
     <display autosize="false" stereotype="true" sort-features="false" accessors="true"/>  
   </package>  
   <class id="2" language="java" name="Negocio.SacoMoeda" project="Trabalho1IA" 
@@ -26,8 +26,26 @@
   </class>  
   <class id="4" language="java" name="Negocio.Porta" project="Trabalho1IA" file="/Trabalho1IA/src/Negocio/Porta.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="625" y="298"/>    
+    <position height="-1" width="-1" x="664" y="246"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="Negocio.Agente" project="Trabalho1IA" file="/Trabalho1IA/src/Negocio/Agente.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="169" width="151" x="160" y="454"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="Negocio.Tabuleiro" project="Trabalho1IA" 
+    file="/Trabalho1IA/src/Negocio/Tabuleiro.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="217" width="179" x="593" y="451"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    

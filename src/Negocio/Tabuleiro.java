@@ -72,17 +72,12 @@ public class Tabuleiro {
 		int xis = x.nextInt(matriz.length);
 		int ips = y.nextInt(matriz.length);
 
-		if (matriz[xis][ips] == "") {
-			matriz[xis][ips] = "A";
-		}else {
-			if(xis==0) {
-				matriz[xis+1][ips] = "A";
-			}
-			if(ips==0) {
-				matriz[xis][ips+1] = "A";
-			}
-			
+		while (!matriz[xis][ips].equals("")) {
+			xis = x.nextInt(matriz.length);
+			ips = y.nextInt(matriz.length);
+			break;
 		}
+		matriz[xis][ips] = "A";
 
 	}
 
