@@ -2,6 +2,8 @@ package Negocio;
 
 import java.util.Random;
 
+import javax.sound.midi.Soundbank;
+
 public class Tabuleiro {
 
 	private String[][] matriz;
@@ -67,6 +69,7 @@ public class Tabuleiro {
 	}
 
 	public void insereAgente() {
+
 		Random x = new Random();
 		Random y = new Random();
 		int xis = x.nextInt(matriz.length);
@@ -77,7 +80,44 @@ public class Tabuleiro {
 			ips = y.nextInt(matriz.length);
 			break;
 		}
+		
+		if (matriz[xis][ips].equals("D")) {
+			matriz[x.nextInt(matriz.length)][y.nextInt(matriz.length)] = "A";
+		}
+		if (matriz[xis][ips].equals("M")) {
+			matriz[x.nextInt(matriz.length)][y.nextInt(matriz.length)] = "A";
+		}
 		matriz[xis][ips] = "A";
+
+	}
+
+	public String posicaoAgente() {
+		String msn = "";
+
+		for (int i = 0; i < matriz.length; i++) {
+			for (int j = 0; j < matriz.length; j++) {
+				if (matriz[i][j].equals("A")) {
+					msn = msn + i + " " + j;
+				}
+			}
+		}
+
+		return msn;
+
+	}
+	
+	public String posicaoPorta() {
+		String msn = "";
+
+		for (int i = 0; i < matriz.length; i++) {
+			for (int j = 0; j < matriz.length; j++) {
+				if (matriz[i][j].equals("D")) {
+					msn = msn + i + " " + j;
+				}
+			}
+		}
+
+		return msn;
 
 	}
 
@@ -88,6 +128,9 @@ public class Tabuleiro {
 		tab.insereAgente();
 
 		tab.mostrarTabuleiro();
+		System.out.println("Posição do Agente\t" + tab.posicaoAgente());
+		System.out.println("Posição da porta\t" + tab.posicaoPorta());
+
 	}
 
 }
