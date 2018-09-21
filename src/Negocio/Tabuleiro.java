@@ -20,7 +20,7 @@ public class Tabuleiro {
 	public void mostrarTabuleiro() {
 		for (int i = 0; i < matriz.length; i++) {
 			for (int j = 0; j < matriz[0].length; j++) {
-				System.out.print(matriz[j][i] + " ");
+				System.out.print(matriz[j][i] + "\t");
 			}
 			System.out.println("\n");
 		}
@@ -80,7 +80,7 @@ public class Tabuleiro {
 			ips = y.nextInt(matriz.length);
 			break;
 		}
-		
+
 		if (matriz[xis][ips].equals("D")) {
 			matriz[x.nextInt(matriz.length)][y.nextInt(matriz.length)] = "A";
 		}
@@ -105,7 +105,7 @@ public class Tabuleiro {
 		return msn;
 
 	}
-	
+
 	public String posicaoPorta() {
 		String msn = "";
 
@@ -121,15 +121,44 @@ public class Tabuleiro {
 
 	}
 
+	public void inserirBuracos(int num) {
+
+		Random r1 = new Random();
+		Random r2 = new Random();
+
+		for (int i = 0; i < num; i++) {
+			int x = r1.nextInt(matriz.length);
+			int y = r2.nextInt(matriz.length);
+			
+		
+
+			if (matriz[x][y].equals("") && !matriz[x][y].equals("B")) {
+				matriz[x][y] = "B";
+			} else {
+				x = r1.nextInt(matriz.length);
+				y = r2.nextInt(matriz.length);
+				if (matriz[x][y].equals("")) {
+					matriz[x][y] = "B";
+				}
+
+			}
+		}
+
+	}
+	
+	
+
 	public static void main(String[] args) {
 		Tabuleiro tab = new Tabuleiro(10);
 
 		tab.randomizaMuroePorta();
 		tab.insereAgente();
 
+		tab.inserirBuracos(5);
+
 		tab.mostrarTabuleiro();
-		System.out.println("Posição do Agente\t" + tab.posicaoAgente());
-		System.out.println("Posição da porta\t" + tab.posicaoPorta());
+		System.out.println("Posicao do Agente\t" + tab.posicaoAgente());
+		System.out.println("Posicao da porta\t" + tab.posicaoPorta());
 
 	}
 
