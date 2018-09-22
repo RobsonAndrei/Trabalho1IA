@@ -92,6 +92,7 @@ public class Tabuleiro {
 	}
 
 	public String posicaoAgente() {
+
 		String msn = "";
 
 		for (int i = 0; i < matriz.length; i++) {
@@ -104,6 +105,34 @@ public class Tabuleiro {
 
 		return msn;
 
+	}
+
+	public int posiCaoXAgente() {
+		int result = 0;
+
+		for (int i = 0; i < matriz.length; i++) {
+			for (int j = 0; j < matriz.length; j++) {
+				if (matriz[i][j].equals("A")) {
+					result = i;
+				}
+			}
+		}
+
+		return result;
+	}
+
+	public int posiCaoYAgente() {
+		int result = 0;
+
+		for (int i = 0; i < matriz.length; i++) {
+			for (int j = 0; j < matriz.length; j++) {
+				if (matriz[i][j].equals("A")) {
+					result = j;
+				}
+			}
+		}
+
+		return result;
 	}
 
 	public String posicaoPorta() {
@@ -129,8 +158,6 @@ public class Tabuleiro {
 		for (int i = 0; i < num; i++) {
 			int x = r1.nextInt(matriz.length);
 			int y = r2.nextInt(matriz.length);
-			
-		
 
 			if (matriz[x][y].equals("") && !matriz[x][y].equals("B")) {
 				matriz[x][y] = "B";
@@ -145,8 +172,86 @@ public class Tabuleiro {
 		}
 
 	}
-	
-	
+
+	public String[] visinhos(int posX, int posY) {
+		String[] vetorVisinhos;
+		int ultPos = matriz.length - 1;
+
+		if (posX == 0 && posY == 0) {
+			vetorVisinhos = new String[3];
+			vetorVisinhos[0] = matriz[posX + 1][0];
+			vetorVisinhos[1] = matriz[posX + 1][posY + 1];
+			vetorVisinhos[2] = matriz[0][posY + 1];
+		}
+
+		if (posX == ultPos && posY == ultPos) {
+			vetorVisinhos = new String[3];
+			vetorVisinhos[0] = matriz[ultPos - 1][ultPos];
+			vetorVisinhos[1] = matriz[ultPos - 1][ultPos - 1];
+			vetorVisinhos[2] = matriz[ultPos][ultPos - 1];
+		}
+
+		if ((posX > 0 || posX < ultPos) && posY == 0) {
+
+			vetorVisinhos = new String[5];
+			vetorVisinhos[0] = matriz[posX - 1][posY];
+			vetorVisinhos[1] = matriz[posX - 1][posY + 1];
+			vetorVisinhos[2] = matriz[posX + 1][posY + 1];
+			vetorVisinhos[3] = matriz[posX + 1][posY + 1];
+			vetorVisinhos[4] = matriz[posX + 1][posY];
+
+		}
+
+		if (posX == 0 && (posY > 0 || posY < ultPos)) {
+
+			vetorVisinhos = new String[5];
+			vetorVisinhos[0] = matriz[posX][posY-1];
+			vetorVisinhos[1] = matriz[posX + 1][posY - 1];
+			vetorVisinhos[2] = matriz[posX + 1][posY];
+			vetorVisinhos[3] = matriz[posX + 1][posY + 1];
+			vetorVisinhos[4] = matriz[posX][posY + 1];
+
+		}
+
+		if (posX == ultPos && (posY > 0 || posY < ultPos)) {
+
+			vetorVisinhos = new String[5];
+			vetorVisinhos[0] = matriz[posX][posY - 1];
+			vetorVisinhos[1] = matriz[posX - 1][posY - 1];
+			vetorVisinhos[2] = matriz[posX - 1][posY];
+			vetorVisinhos[3] = matriz[posX - 1][posY + 1];
+			vetorVisinhos[4] = matriz[posX][posY + 1];
+
+		}
+
+		if ((posX > 0 || posX < ultPos) && posY == ultPos) {
+
+			vetorVisinhos = new String[5];
+			vetorVisinhos[0] = matriz[posX - 1][posY];
+			vetorVisinhos[1] = matriz[posX - 1][posY - 1];
+			vetorVisinhos[2] = matriz[posX][posY - 1];
+			vetorVisinhos[3] = matriz[posX + 1][posY - 1];
+			vetorVisinhos[4] = matriz[posX + 1][posY - 1];
+
+		}
+		if ((posX > 0 || posX < ultPos) && (posY > 0 || posY < ultPos) && (posX != 0) && (posY != 0) && (posX != ultPos)
+				&& (posY != ultPos)) {
+			vetorVisinhos = new String[8];
+			vetorVisinhos[0] = matriz[posX - 1][posY - 1];
+			vetorVisinhos[1] = matriz[posX - 1][posY];
+			vetorVisinhos[2] = matriz[posX - 1][posY + 1];
+			vetorVisinhos[3] = matriz[posX][posY - 1];
+			vetorVisinhos[4] = matriz[posX][posY + 1];
+			vetorVisinhos[5] = matriz[posX + 1][posY - 1];
+			vetorVisinhos[6] = matriz[posX + 1][posY];
+			vetorVisinhos[7] = matriz[posX + 1][posY + 1];
+
+		} else {
+			vetorVisinhos = new String[1];
+		}
+
+		return vetorVisinhos;
+	}
 
 	public static void main(String[] args) {
 		Tabuleiro tab = new Tabuleiro(10);
@@ -157,6 +262,13 @@ public class Tabuleiro {
 		tab.inserirBuracos(5);
 
 		tab.mostrarTabuleiro();
+		String[] vis = tab.visinhos(tab.posiCaoXAgente(), tab.posiCaoYAgente());
+		System.out.println("Visinhos do Agente");
+		for (int i = 0; i < vis.length; i++) {
+			System.out.print(vis[i] + " ");
+		}
+		System.out.println("\n");
+
 		System.out.println("Posicao do Agente\t" + tab.posicaoAgente());
 		System.out.println("Posicao da porta\t" + tab.posicaoPorta());
 
