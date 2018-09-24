@@ -7,6 +7,11 @@ import javax.sound.midi.Soundbank;
 public class Tabuleiro {
 
 	private String[][] matriz;
+	private int posicaoXAgente = 0;
+	private int posicaoYAgente = 0;
+	private int posicaoXPorta = 0;
+	private int posicaoYPorta = 0;
+	private Random random = new Random();
 
 	public Tabuleiro(int tamanho) {
 		this.matriz = new String[tamanho][tamanho];
@@ -27,40 +32,44 @@ public class Tabuleiro {
 	}
 
 	public void randomizaMuroePorta() {
-		Random r = new Random();
-		int result = r.nextInt(4);
+		int result = this.random.nextInt(4);
+		int r = this.random.nextInt(this.matriz.length);
 
 		switch (result) {
 		case 0:
-			for (int i = 0; i < matriz.length; i++) {
-				matriz[i][0] = "M";
+			for (int i = 0; i < this.matriz.length; i++) {
+				this.matriz[i][0] = "M";
 			}
-			Random r2 = new Random();
-			matriz[r2.nextInt(matriz.length)][0] = "D";
+			this.matriz[r][0] = "D";
+			this.posicaoXPorta = r;
+			this.posicaoYPorta = 0;
 			break;
 
 		case 1:
-			for (int i = 0; i < matriz.length; i++) {
-				matriz[0][i] = "M";
+			for (int i = 0; i < this.matriz.length; i++) {
+				this.matriz[0][i] = "M";
 			}
-			Random r3 = new Random();
-			matriz[0][r3.nextInt(matriz.length)] = "D";
+			this.matriz[0][r] = "D";
+			this.posicaoXPorta = 0;
+			this.posicaoYPorta = r;
 			break;
 
 		case 2:
-			for (int i = 0; i < matriz.length; i++) {
-				matriz[matriz.length - 1][i] = "M";
+			for (int i = 0; i < this.matriz.length; i++) {
+				this.matriz[this.matriz.length - 1][i] = "M";
 			}
-			Random r4 = new Random();
-			matriz[matriz.length - 1][r4.nextInt(matriz.length)] = "D";
+			this.matriz[this.matriz.length - 1][r] = "D";
+			this.posicaoXPorta = (this.matriz.length - 1);
+			this.posicaoYPorta = r;
 			break;
 
 		case 3:
-			for (int i = 0; i < matriz.length; i++) {
-				matriz[i][matriz.length - 1] = "M";
+			for (int i = 0; i < this.matriz.length; i++) {
+				this.matriz[i][this.matriz.length - 1] = "M";
 			}
-			Random r5 = new Random();
-			matriz[r5.nextInt(matriz.length)][matriz.length - 1] = "D";
+			this.matriz[r][this.matriz.length - 1] = "D";
+			this.posicaoXPorta = r;
+			this.posicaoYPorta = (this.matriz.length - 1);
 			break;
 
 		default:
@@ -70,108 +79,54 @@ public class Tabuleiro {
 
 	public void insereAgente() {
 
-		Random x = new Random();
-		Random y = new Random();
-		int xis = x.nextInt(matriz.length);
-		int ips = y.nextInt(matriz.length);
+		int xis = 0;
+		int ips = 0;
 
-		while (!matriz[xis][ips].equals("")) {
-			xis = x.nextInt(matriz.length);
-			ips = y.nextInt(matriz.length);
-			break;
-		}
+		do {
+			xis = this.random.nextInt(this.matriz.length);
+			ips = this.random.nextInt(this.matriz.length);
+		} while (!this.matriz[xis][ips].equals("") && !this.matriz[xis][ips].equals("D")
+				&& this.matriz[xis][ips].equals("M"));
 
-		if (matriz[xis][ips].equals("D")) {
-			matriz[x.nextInt(matriz.length)][y.nextInt(matriz.length)] = "A";
-		}
-		if (matriz[xis][ips].equals("M")) {
-			matriz[x.nextInt(matriz.length)][y.nextInt(matriz.length)] = "A";
-		}
-		matriz[xis][ips] = "A";
+		this.matriz[xis][ips] = "A";
+
+		this.posicaoXAgente = xis;
+		this.posicaoYAgente = ips;
 
 	}
 
 	public String posicaoAgente() {
 
-		String msn = "";
-
-		for (int i = 0; i < matriz.length; i++) {
-			for (int j = 0; j < matriz.length; j++) {
-				if (matriz[j][i].equals("A")) {
-					msn = msn + i + " " + j;
-				}
-			}
-		}
-
-		return msn;
+		return this.posicaoXAgente + " " + this.posicaoYAgente;
 
 	}
 
 	public int posiCaoXAgente() {
-		int result = 0;
-
-		for (int i = 0; i < matriz.length; i++) {
-			for (int j = 0; j < matriz.length; j++) {
-				if (matriz[i][j].equals("A")) {
-					result = i;
-				}
-			}
-		}
-
-		return result;
+		return this.posicaoXAgente;
 	}
 
 	public int posiCaoYAgente() {
-		int result = 0;
-
-		for (int i = 0; i < matriz.length; i++) {
-			for (int j = 0; j < matriz.length; j++) {
-				if (matriz[i][j].equals("A")) {
-					result = j;
-				}
-			}
-		}
-
-		return result;
+		return this.posicaoYAgente;
 	}
 
 	public String posicaoPorta() {
-		String msn = "";
-
-		for (int i = 0; i < matriz.length; i++) {
-			for (int j = 0; j < matriz.length; j++) {
-				if (matriz[i][j].equals("D")) {
-					msn = msn + i + " " + j;
-				}
-			}
-		}
-
-		return msn;
-
-	}
+        return this.posicaoXPorta + " " + this.posicaoYPorta;
+    }
 
 	public void inserirBuracos(int num) {
+        int x = 0;
+        int y = 0;
 
-		Random r1 = new Random();
-		Random r2 = new Random();
+        for (int i = 0; i < num; i++) {
+            x = this.random.nextInt(this.matriz.length);
+            y = this.random.nextInt(this.matriz.length);
 
-		for (int i = 0; i < num; i++) {
-			int x = r1.nextInt(matriz.length);
-			int y = r2.nextInt(matriz.length);
+            if (this.matriz[x][y].equals("")) {
+                this.matriz[x][y] = "B";
+            }
+        }
 
-			if (matriz[x][y].equals("") && !matriz[x][y].equals("B")) {
-				matriz[x][y] = "B";
-			} else {
-				x = r1.nextInt(matriz.length);
-				y = r2.nextInt(matriz.length);
-				if (matriz[x][y].equals("")) {
-					matriz[x][y] = "B";
-				}
-
-			}
-		}
-
-	}
+    }
 
 	public String[] visinhos(int posX, int posY) {
 		String[] vetorVisinhos;
@@ -205,7 +160,7 @@ public class Tabuleiro {
 		if (posX == 0 && (posY > 0 || posY < ultPos)) {
 
 			vetorVisinhos = new String[5];
-			vetorVisinhos[0] = matriz[posX][posY-1];
+			vetorVisinhos[0] = matriz[posX][posY - 1];
 			vetorVisinhos[1] = matriz[posX + 1][posY - 1];
 			vetorVisinhos[2] = matriz[posX + 1][posY];
 			vetorVisinhos[3] = matriz[posX + 1][posY + 1];
