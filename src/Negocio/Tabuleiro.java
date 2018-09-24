@@ -97,7 +97,7 @@ public class Tabuleiro {
 
 		for (int i = 0; i < matriz.length; i++) {
 			for (int j = 0; j < matriz.length; j++) {
-				if (matriz[i][j].equals("A")) {
+				if (matriz[j][i].equals("A")) {
 					msn = msn + i + " " + j;
 				}
 			}
