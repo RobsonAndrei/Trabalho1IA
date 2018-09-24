@@ -41,8 +41,8 @@ public class Tabuleiro {
 				this.matriz[i][0] = "M";
 			}
 			this.matriz[r][0] = "D";
-			this.posicaoXPorta = r;
-			this.posicaoYPorta = 0;
+			this.posicaoYPorta = r;
+			this.posicaoXPorta = 0;
 			break;
 
 		case 1:
@@ -50,8 +50,8 @@ public class Tabuleiro {
 				this.matriz[0][i] = "M";
 			}
 			this.matriz[0][r] = "D";
-			this.posicaoXPorta = 0;
-			this.posicaoYPorta = r;
+			this.posicaoYPorta = 0;
+			this.posicaoXPorta = r;
 			break;
 
 		case 2:
@@ -59,8 +59,8 @@ public class Tabuleiro {
 				this.matriz[this.matriz.length - 1][i] = "M";
 			}
 			this.matriz[this.matriz.length - 1][r] = "D";
-			this.posicaoXPorta = (this.matriz.length - 1);
-			this.posicaoYPorta = r;
+			this.posicaoYPorta = (this.matriz.length - 1);
+			this.posicaoXPorta = r;
 			break;
 
 		case 3:
@@ -68,8 +68,8 @@ public class Tabuleiro {
 				this.matriz[i][this.matriz.length - 1] = "M";
 			}
 			this.matriz[r][this.matriz.length - 1] = "D";
-			this.posicaoXPorta = r;
-			this.posicaoYPorta = (this.matriz.length - 1);
+			this.posicaoYPorta = r;
+			this.posicaoXPorta = (this.matriz.length - 1);
 			break;
 
 		default:
@@ -90,8 +90,8 @@ public class Tabuleiro {
 
 		this.matriz[xis][ips] = "A";
 
-		this.posicaoXAgente = xis;
-		this.posicaoYAgente = ips;
+		this.posicaoXAgente = ips;
+		this.posicaoYAgente = xis;
 
 	}
 
@@ -110,97 +110,38 @@ public class Tabuleiro {
 	}
 
 	public String posicaoPorta() {
-        return this.posicaoXPorta + " " + this.posicaoYPorta;
-    }
+		return this.posicaoXPorta + " " + this.posicaoYPorta;
+	}
 
 	public void inserirBuracos(int num) {
-        int x = 0;
-        int y = 0;
+		int x = 0;
+		int y = 0;
 
-        for (int i = 0; i < num; i++) {
-            x = this.random.nextInt(this.matriz.length);
-            y = this.random.nextInt(this.matriz.length);
+		for (int i = 0; i < num; i++) {
+			x = this.random.nextInt(this.matriz.length);
+			y = this.random.nextInt(this.matriz.length);
 
-            if (this.matriz[x][y].equals("")) {
-                this.matriz[x][y] = "B";
-            }
-        }
+			if (this.matriz[x][y].equals("")) {
+				this.matriz[x][y] = "B";
+			}
+		}
 
-    }
+	}
 
 	public String[] visinhos(int posX, int posY) {
-		String[] vetorVisinhos;
-		int ultPos = matriz.length - 1;
+		String[] vetorVisinhos = new String[16];
+		int ultPos = this.matriz.length - 1;
 
 		if (posX == 0 && posY == 0) {
-			vetorVisinhos = new String[3];
-			vetorVisinhos[0] = matriz[posX + 1][0];
-			vetorVisinhos[1] = matriz[posX + 1][posY + 1];
-			vetorVisinhos[2] = matriz[0][posY + 1];
-		}
-
-		if (posX == ultPos && posY == ultPos) {
-			vetorVisinhos = new String[3];
-			vetorVisinhos[0] = matriz[ultPos - 1][ultPos];
-			vetorVisinhos[1] = matriz[ultPos - 1][ultPos - 1];
-			vetorVisinhos[2] = matriz[ultPos][ultPos - 1];
-		}
-
-		if ((posX > 0 || posX < ultPos) && posY == 0) {
-
-			vetorVisinhos = new String[5];
-			vetorVisinhos[0] = matriz[posX - 1][posY];
-			vetorVisinhos[1] = matriz[posX - 1][posY + 1];
-			vetorVisinhos[2] = matriz[posX + 1][posY + 1];
-			vetorVisinhos[3] = matriz[posX + 1][posY + 1];
-			vetorVisinhos[4] = matriz[posX + 1][posY];
-
-		}
-
-		if (posX == 0 && (posY > 0 || posY < ultPos)) {
-
-			vetorVisinhos = new String[5];
-			vetorVisinhos[0] = matriz[posX][posY - 1];
-			vetorVisinhos[1] = matriz[posX + 1][posY - 1];
+			vetorVisinhos = new String[6];
+			vetorVisinhos[0] = matriz[posX][posY + 1];
+			vetorVisinhos[1] = matriz[posX][posY + 2];
 			vetorVisinhos[2] = matriz[posX + 1][posY];
 			vetorVisinhos[3] = matriz[posX + 1][posY + 1];
-			vetorVisinhos[4] = matriz[posX][posY + 1];
-
-		}
-
-		if (posX == ultPos && (posY > 0 || posY < ultPos)) {
-
-			vetorVisinhos = new String[5];
-			vetorVisinhos[0] = matriz[posX][posY - 1];
-			vetorVisinhos[1] = matriz[posX - 1][posY - 1];
-			vetorVisinhos[2] = matriz[posX - 1][posY];
-			vetorVisinhos[3] = matriz[posX - 1][posY + 1];
-			vetorVisinhos[4] = matriz[posX][posY + 1];
-
-		}
-
-		if ((posX > 0 || posX < ultPos) && posY == ultPos) {
-
-			vetorVisinhos = new String[5];
-			vetorVisinhos[0] = matriz[posX - 1][posY];
-			vetorVisinhos[1] = matriz[posX - 1][posY - 1];
-			vetorVisinhos[2] = matriz[posX][posY - 1];
-			vetorVisinhos[3] = matriz[posX + 1][posY - 1];
-			vetorVisinhos[4] = matriz[posX + 1][posY - 1];
-
-		}
-		if ((posX > 0 || posX < ultPos) && (posY > 0 || posY < ultPos) && (posX != 0) && (posY != 0) && (posX != ultPos)
-				&& (posY != ultPos)) {
-			vetorVisinhos = new String[8];
-			vetorVisinhos[0] = matriz[posX - 1][posY - 1];
-			vetorVisinhos[1] = matriz[posX - 1][posY];
-			vetorVisinhos[2] = matriz[posX - 1][posY + 1];
-			vetorVisinhos[3] = matriz[posX][posY - 1];
-			vetorVisinhos[4] = matriz[posX][posY + 1];
-			vetorVisinhos[5] = matriz[posX + 1][posY - 1];
-			vetorVisinhos[6] = matriz[posX + 1][posY];
-			vetorVisinhos[7] = matriz[posX + 1][posY + 1];
-
+			vetorVisinhos[4] = matriz[posX + 2][posY];
+			vetorVisinhos[5] = matriz[posX + 2][posY + 2];
+			
+			
 		} else {
 			vetorVisinhos = new String[1];
 		}
