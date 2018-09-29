@@ -17,7 +17,7 @@ public class Tabuleiro {
 		this.matriz = new String[tamanho][tamanho];
 		for (int i = 0; i < matriz.length; i++) {
 			for (int j = 0; j < matriz.length; j++) {
-				matriz[i][j] = "";
+				matriz[i][j] = "-";
 			}
 		}
 	}
@@ -85,7 +85,7 @@ public class Tabuleiro {
 		do {
 			xis = this.random.nextInt(this.matriz.length);
 			ips = this.random.nextInt(this.matriz.length);
-		} while (!this.matriz[xis][ips].equals("") && !this.matriz[xis][ips].equals("D")
+		} while (!this.matriz[xis][ips].equals("-") && !this.matriz[xis][ips].equals("D")
 				&& this.matriz[xis][ips].equals("M"));
 
 		this.matriz[xis][ips] = "A";
@@ -114,6 +114,7 @@ public class Tabuleiro {
 	}
 
 	public void inserirBuracos(int num) {
+
 		int x = 0;
 		int y = 0;
 
@@ -121,29 +122,246 @@ public class Tabuleiro {
 			x = this.random.nextInt(this.matriz.length);
 			y = this.random.nextInt(this.matriz.length);
 
-			if (this.matriz[x][y].equals("")) {
+			if (!this.matriz[x][y].equals("-growing") && !this.matriz[x][y].equals("M")
+					&& !this.matriz[x][y].equals("D") && !this.matriz[x][y].equals("B")
+					&& !this.matriz[x][y].equals("A") && visinhosContem(y, x, "B") == false) {
 				this.matriz[x][y] = "B";
-			}
+			} 
 		}
 
 	}
 
-	public String[] visinhos(int posX, int posY) {
-		String[] vetorVisinhos = new String[16];
+	public Boolean visinhosContem(int posY, int posX, String msn) {
+		boolean contem = false;
+
+		String[] vetorVisinhos = new String[1];
 		int ultPos = this.matriz.length - 1;
 
-		if (posX == 0 && posY == 0) {
-			vetorVisinhos = new String[6];
+		if (posX == 0 && posY == 0) {// Canto superior esquerdo
+			vetorVisinhos = new String[3];
 			vetorVisinhos[0] = matriz[posX][posY + 1];
-			vetorVisinhos[1] = matriz[posX][posY + 2];
-			vetorVisinhos[2] = matriz[posX + 1][posY];
-			vetorVisinhos[3] = matriz[posX + 1][posY + 1];
-			vetorVisinhos[4] = matriz[posX + 2][posY];
-			vetorVisinhos[5] = matriz[posX + 2][posY + 2];
-			
-			
+			vetorVisinhos[1] = matriz[posX + 1][posY];
+			vetorVisinhos[2] = matriz[posX + 1][posY + 1];
+			for (int i = 0; i < vetorVisinhos.length; i++) {
+				if (vetorVisinhos[i].equals("B")) {
+					contem = true;
+				}
+			}
+
 		} else {
-			vetorVisinhos = new String[1];
+			if (posX == ultPos && posY == ultPos) { // Canto inferior direito
+				vetorVisinhos = new String[3];
+				vetorVisinhos[0] = matriz[posX][posY - 1];
+				vetorVisinhos[1] = matriz[posX - 1][posY - 1];
+				vetorVisinhos[2] = matriz[posX - 1][posY];
+				for (int i = 0; i < vetorVisinhos.length; i++) {
+					if (vetorVisinhos[i].equals("B")) {
+						contem = true;
+					}
+				}
+
+			} else {
+				if ((posX == 0) && (posY >= 1 && posY <= ultPos - 1)) { // Corredor superior
+					vetorVisinhos = new String[5];
+					vetorVisinhos[0] = matriz[posX][posY - 1];
+					vetorVisinhos[1] = matriz[posX][posY + 1];
+					vetorVisinhos[2] = matriz[posX + 1][posY - 1];
+					vetorVisinhos[3] = matriz[posX + 1][posY];
+					vetorVisinhos[4] = matriz[posX + 1][posY + 1];
+
+					for (int i = 0; i < vetorVisinhos.length; i++) {
+						if (vetorVisinhos[i].equals("B")) {
+							contem = true;
+						}
+					}
+				} else {
+
+					if ((posX >= 1 && posX <= ultPos - 1) && posY == 0) { // Corredor esquerdo
+						vetorVisinhos = new String[5];
+						vetorVisinhos[0] = matriz[posX - 1][posY];
+						vetorVisinhos[1] = matriz[posX - 1][posY + 1];
+						vetorVisinhos[2] = matriz[posX][posY + 1];
+						vetorVisinhos[3] = matriz[posX + 1][posY];
+						vetorVisinhos[4] = matriz[posX + 1][posY + 1];
+
+						for (int i = 0; i < vetorVisinhos.length; i++) {
+							if (vetorVisinhos[i].equals("B")) {
+								contem = true;
+							}
+						}
+					} else {
+						if ((posX == ultPos) && (posY >= 1 && posY <= ultPos - 1)) { // Corredor inferior
+							vetorVisinhos = new String[5];
+							vetorVisinhos[0] = matriz[posX][posY - 1];
+							vetorVisinhos[1] = matriz[posX - 1][posY - 1];
+							vetorVisinhos[2] = matriz[posX - 1][posY];
+							vetorVisinhos[3] = matriz[posX - 1][posY + 1];
+							vetorVisinhos[4] = matriz[posX][posY + 1];
+
+							for (int i = 0; i < vetorVisinhos.length; i++) {
+								if (vetorVisinhos[i].equals("B")) {
+									contem = true;
+								}
+							}
+						} else {
+							if (posX == ultPos && posY == 0) { // Canto inferior esquerdo
+								vetorVisinhos = new String[3];
+								vetorVisinhos[0] = matriz[posX - 1][posY];
+								vetorVisinhos[1] = matriz[posX - 1][posY + 1];
+								vetorVisinhos[2] = matriz[posX][posY + 1];
+								for (int i = 0; i < vetorVisinhos.length; i++) {
+									if (vetorVisinhos[i].equals("B")) {
+										contem = true;
+									}
+								}
+							} else {
+								if (posX == 0 && posY == ultPos) { // Canto superior direito
+									vetorVisinhos = new String[3];
+									vetorVisinhos[0] = matriz[posX][posY - 1];
+									vetorVisinhos[1] = matriz[posX + 1][posY - 1];
+									vetorVisinhos[2] = matriz[posX + 1][posY];
+
+									for (int i = 0; i < vetorVisinhos.length; i++) {
+										if (vetorVisinhos[i].equals("B")) {
+											contem = true;
+										}
+									}
+								} else {
+									if ((posX >= 1 && posX <= ultPos - 1) && (posY == ultPos)) { // Corredor direito
+										vetorVisinhos = new String[5];
+										vetorVisinhos[0] = matriz[posX - 1][posY];
+										vetorVisinhos[1] = matriz[posX - 1][posY - 1];
+										vetorVisinhos[2] = matriz[posX][posY - 1];
+										vetorVisinhos[3] = matriz[posX + 1][posY - 1];
+										vetorVisinhos[4] = matriz[posX + 1][posY];
+
+										for (int i = 0; i < vetorVisinhos.length; i++) {
+											if (vetorVisinhos[i].equals("B")) {
+												contem = true;
+											}
+										}
+									} else {
+										if ((posX >= 1 && posX <= ultPos - 1) && (posY >= 1 && posY <= ultPos - 1)) {
+											vetorVisinhos = new String[8];
+											vetorVisinhos[0] = matriz[posX - 1][posY - 1];
+											vetorVisinhos[1] = matriz[posX - 1][posY];
+											vetorVisinhos[2] = matriz[posX - 1][posY + 1];
+											vetorVisinhos[3] = matriz[posX][posY - 1];
+											vetorVisinhos[4] = matriz[posX][posY + 1];
+											vetorVisinhos[5] = matriz[posX + 1][posY - 1];
+											vetorVisinhos[6] = matriz[posX + 1][posY];
+											vetorVisinhos[7] = matriz[posX + 1][posY + 1];
+
+											for (int i = 0; i < vetorVisinhos.length; i++) {
+												if (vetorVisinhos[i].equals("B")) {
+													contem = true;
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+		}
+
+		return contem;
+	}
+
+	/***
+	 * Posiçao dos vizinhos na matriz this.matriz[x-1][y+1] this.matriz[x][y-1]
+	 * this.matriz[x][y+1] this.matriz[x+1][y-1] this.matriz[x+1][y]
+	 * this.matriz[x+1][y+1]
+	 * 
+	 * 
+	 * 
+	 */
+
+	public String[] visinhos(int posY, int posX) {
+		String[] vetorVisinhos = new String[1];
+		int ultPos = this.matriz.length - 1;
+
+		if (posX == 0 && posY == 0) {// Canto superior esquerdo
+			vetorVisinhos = new String[3];
+			vetorVisinhos[0] = matriz[posX][posY + 1];
+			vetorVisinhos[1] = matriz[posX + 1][posY];
+			vetorVisinhos[2] = matriz[posX + 1][posY + 1];
+
+		} else {
+			if (posX == ultPos && posY == ultPos) { // Canto inferior direito
+				vetorVisinhos = new String[3];
+				vetorVisinhos[0] = matriz[posX][posY - 1];
+				vetorVisinhos[1] = matriz[posX - 1][posY - 1];
+				vetorVisinhos[2] = matriz[posX - 1][posY];
+
+			} else {
+				if ((posX == 0) && (posY >= 1 && posY <= ultPos - 1)) { // Corredor superior
+					vetorVisinhos = new String[5];
+					vetorVisinhos[0] = matriz[posX][posY - 1];
+					vetorVisinhos[1] = matriz[posX][posY + 1];
+					vetorVisinhos[2] = matriz[posX + 1][posY - 1];
+					vetorVisinhos[3] = matriz[posX + 1][posY];
+					vetorVisinhos[4] = matriz[posX + 1][posY + 1];
+				} else {
+
+					if ((posX >= 1 && posX <= ultPos - 1) && posY == 0) { // Corredor esquerdo
+						vetorVisinhos = new String[5];
+						vetorVisinhos[0] = matriz[posX - 1][posY];
+						vetorVisinhos[1] = matriz[posX - 1][posY + 1];
+						vetorVisinhos[2] = matriz[posX][posY + 1];
+						vetorVisinhos[3] = matriz[posX + 1][posY];
+						vetorVisinhos[4] = matriz[posX + 1][posY + 1];
+					} else {
+						if ((posX == ultPos) && (posY >= 1 && posY <= ultPos - 1)) { // Corredor inferior
+							vetorVisinhos = new String[5];
+							vetorVisinhos[0] = matriz[posX][posY - 1];
+							vetorVisinhos[1] = matriz[posX - 1][posY - 1];
+							vetorVisinhos[2] = matriz[posX - 1][posY];
+							vetorVisinhos[3] = matriz[posX - 1][posY + 1];
+							vetorVisinhos[4] = matriz[posX][posY + 1];
+						} else {
+							if (posX == ultPos && posY == 0) { // Canto inferior esquerdo
+								vetorVisinhos = new String[3];
+								vetorVisinhos[0] = matriz[posX - 1][posY];
+								vetorVisinhos[1] = matriz[posX - 1][posY + 1];
+								vetorVisinhos[2] = matriz[posX][posY + 1];
+							} else {
+								if (posX == 0 && posY == ultPos) { // Canto superior direito
+									vetorVisinhos = new String[3];
+									vetorVisinhos[0] = matriz[posX][posY - 1];
+									vetorVisinhos[1] = matriz[posX + 1][posY - 1];
+									vetorVisinhos[2] = matriz[posX + 1][posY];
+								} else {
+									if ((posX >= 1 && posX <= ultPos - 1) && (posY == ultPos)) { // Corredor direito
+										vetorVisinhos = new String[5];
+										vetorVisinhos[0] = matriz[posX - 1][posY];
+										vetorVisinhos[1] = matriz[posX - 1][posY - 1];
+										vetorVisinhos[2] = matriz[posX][posY - 1];
+										vetorVisinhos[3] = matriz[posX + 1][posY - 1];
+										vetorVisinhos[4] = matriz[posX + 1][posY];
+									} else {
+										if ((posX >= 1 && posX <= ultPos - 1) && (posY >= 1 && posY <= ultPos - 1)) {
+											vetorVisinhos = new String[8];
+											vetorVisinhos[0] = matriz[posX - 1][posY - 1];
+											vetorVisinhos[1] = matriz[posX - 1][posY];
+											vetorVisinhos[2] = matriz[posX - 1][posY + 1];
+											vetorVisinhos[3] = matriz[posX][posY - 1];
+											vetorVisinhos[4] = matriz[posX][posY + 1];
+											vetorVisinhos[5] = matriz[posX + 1][posY - 1];
+											vetorVisinhos[6] = matriz[posX + 1][posY];
+											vetorVisinhos[7] = matriz[posX + 1][posY + 1];
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
 		}
 
 		return vetorVisinhos;
@@ -155,10 +373,11 @@ public class Tabuleiro {
 		tab.randomizaMuroePorta();
 		tab.insereAgente();
 
-		tab.inserirBuracos(5);
+		tab.inserirBuracos(28);
 
 		tab.mostrarTabuleiro();
 		String[] vis = tab.visinhos(tab.posiCaoXAgente(), tab.posiCaoYAgente());
+
 		System.out.println("Visinhos do Agente");
 		for (int i = 0; i < vis.length; i++) {
 			System.out.print(vis[i] + " ");
