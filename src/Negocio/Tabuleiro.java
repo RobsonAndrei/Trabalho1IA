@@ -2,8 +2,6 @@ package Negocio;
 
 import java.util.Random;
 
-import javax.sound.midi.Soundbank;
-
 public class Tabuleiro {
 
 	private String[][] matriz;
@@ -29,6 +27,146 @@ public class Tabuleiro {
 			}
 			System.out.println("\n");
 		}
+	}
+
+	public void moVimentaAgente(String msn) {
+
+		switch (msn) {
+
+		case "^":
+			int x = 0;
+			int y = 0;
+			for (int i = 0; i < matriz.length; i++) {
+				for (int j = 0; j < matriz.length; j++) {
+					if (matriz[j][i].equals("A")) {
+						x = i;
+						y = j;
+					}
+				}
+			}
+			if (x > 0) {
+				if (matriz[y][x - 1].equals("B")) {
+					matriz[y][x] = "-";
+					matriz[y][x - 2] = "A";
+				} else {
+					matriz[y][x] = "-";
+					matriz[y][x - 1] = "A";
+
+				}
+
+			}
+
+			mostrarTabuleiro();
+
+		case "->":
+
+		case "^^":
+
+		case "v":
+
+		case "vv":
+
+		case "<-":
+
+		case "<<":
+
+		case ">>":
+
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	public void renderizaMurosInternos() {
+
+		if (matriz[matriz.length - 1][0].equals("M")
+				|| matriz[matriz.length - 1][0].equals("D") && matriz[matriz.length - 1][matriz.length - 1].equals("M")
+				|| matriz[matriz.length - 1][matriz.length - 1].equals("D")) {
+
+			for (int i = 0; i < 5; i++) {
+				matriz[matriz.length - 4][i] = "M";
+			}
+
+			for (int i = 1; i < 5; i++) {
+				matriz[matriz.length - 7][i] = "M";
+			}
+
+			for (int i = 0; i < 5; i++) {
+				matriz[i][matriz.length - 4] = "M";
+			}
+
+			for (int i = 1; i < 5; i++) {
+				matriz[i][matriz.length - 1] = "M";
+			}
+
+		}
+
+		if (matriz[0][0].equals("M") || matriz[0][0].equals("D") && matriz[0][matriz.length - 1].equals("M")
+				|| matriz[0][matriz.length - 1].equals("D")) {
+
+			for (int i = matriz.length - 1; i < 5; i--) {
+				matriz[i][matriz.length - 1] = "M";
+			}
+
+			for (int i = 0; i < 5; i++) {
+				matriz[matriz.length - 7][i] = "M";
+			}
+
+			for (int i = matriz.length - 1; i < 5; i--) {
+				matriz[i][matriz.length - 4] = "M";
+			}
+
+			for (int i = 1; i < 5; i++) {
+				matriz[i][0] = "M";
+			}
+
+		}
+
+		if (matriz[0][matriz.length - 1].equals("M")
+				|| matriz[0][matriz.length - 1].equals("D") && matriz[matriz.length - 1][matriz.length - 1].equals("M")
+				|| matriz[matriz.length - 1][matriz.length - 1].equals("D")) {
+
+			for (int i = 0; i < 5; i++) {
+				matriz[i][1] = "M";
+			}
+
+			for (int i = 0; i < 5; i++) {
+				matriz[matriz.length - 4][i] = "M";
+			}
+
+			for (int i = 0; i < 5; i++) {
+				matriz[matriz.length - 4][i] = "M";
+			}
+
+			for (int i = 1; i < 5; i++) {
+				matriz[matriz.length - 2][i] = "M";
+			}
+
+		}
+
+		if (matriz[0][0].equals("M") || matriz[0][0].equals("D") && matriz[matriz.length - 1][0].equals("M")
+				|| matriz[matriz.length - 1][0].equals("D")) {
+
+			for (int i = 0; i < 5; i++) {
+				matriz[i][3] = "M";
+			}
+
+			for (int i = matriz.length - 1; i < 5; i--) {
+				matriz[i][matriz.length - 3] = "M";
+			}
+
+			for (int i = matriz.length - 1; i < 5; i--) {
+				matriz[i][matriz.length - 4] = "M";
+			}
+
+			for (int i = matriz.length - 3; i < 5; i--) {
+				matriz[matriz.length - 5][i] = "M";
+			}
+
+		}
+
 	}
 
 	public void randomizaMuroePorta() {
@@ -86,7 +224,7 @@ public class Tabuleiro {
 			xis = this.random.nextInt(this.matriz.length);
 			ips = this.random.nextInt(this.matriz.length);
 		} while (!this.matriz[xis][ips].equals("-") && !this.matriz[xis][ips].equals("D")
-				&& this.matriz[xis][ips].equals("M"));
+				&& !this.matriz[xis][ips].equals("M"));
 
 		this.matriz[xis][ips] = "A";
 
@@ -126,7 +264,7 @@ public class Tabuleiro {
 					&& !this.matriz[x][y].equals("D") && !this.matriz[x][y].equals("B")
 					&& !this.matriz[x][y].equals("A") && visinhosContem(y, x, "B") == false) {
 				this.matriz[x][y] = "B";
-			} 
+			}
 		}
 
 	}
@@ -271,15 +409,6 @@ public class Tabuleiro {
 		return contem;
 	}
 
-	/***
-	 * Posiçao dos vizinhos na matriz this.matriz[x-1][y+1] this.matriz[x][y-1]
-	 * this.matriz[x][y+1] this.matriz[x+1][y-1] this.matriz[x+1][y]
-	 * this.matriz[x+1][y+1]
-	 * 
-	 * 
-	 * 
-	 */
-
 	public String[] visinhos(int posY, int posX) {
 		String[] vetorVisinhos = new String[1];
 		int ultPos = this.matriz.length - 1;
@@ -369,23 +498,16 @@ public class Tabuleiro {
 
 	public static void main(String[] args) {
 		Tabuleiro tab = new Tabuleiro(10);
-
+		
 		tab.randomizaMuroePorta();
+		
+		tab.renderizaMurosInternos();
+
 		tab.insereAgente();
 
 		tab.inserirBuracos(28);
 
-		tab.mostrarTabuleiro();
-		String[] vis = tab.visinhos(tab.posiCaoXAgente(), tab.posiCaoYAgente());
-
-		System.out.println("Visinhos do Agente");
-		for (int i = 0; i < vis.length; i++) {
-			System.out.print(vis[i] + " ");
-		}
-		System.out.println("\n");
-
-		System.out.println("Posicao do Agente\t" + tab.posicaoAgente());
-		System.out.println("Posicao da porta\t" + tab.posicaoPorta());
+		tab.moVimentaAgente("^");
 
 	}
 
