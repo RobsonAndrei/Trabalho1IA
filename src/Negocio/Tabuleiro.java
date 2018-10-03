@@ -89,7 +89,7 @@ public class Tabuleiro {
 				matriz[matriz.length - 4][i] = "M";
 			}
 
-			for (int i = 1; i < 5; i++) {
+			for (int i = 1; i < 6; i++) {
 				matriz[matriz.length - 7][i] = "M";
 			}
 
@@ -97,7 +97,7 @@ public class Tabuleiro {
 				matriz[i][matriz.length - 4] = "M";
 			}
 
-			for (int i = 1; i < 5; i++) {
+			for (int i = 1; i < 6; i++) {
 				matriz[i][matriz.length - 1] = "M";
 			}
 
@@ -118,7 +118,7 @@ public class Tabuleiro {
 				matriz[i][matriz.length - 4] = "M";
 			}
 
-			for (int i = 1; i < 5; i++) {
+			for (int i = 1; i < 6; i++) {
 				matriz[i][0] = "M";
 			}
 
@@ -140,7 +140,7 @@ public class Tabuleiro {
 				matriz[matriz.length - 4][i] = "M";
 			}
 
-			for (int i = 1; i < 5; i++) {
+			for (int i = 1; i < 6; i++) {
 				matriz[matriz.length - 2][i] = "M";
 			}
 
@@ -502,10 +502,10 @@ public class Tabuleiro {
 		tab.randomizaMuroePorta();
 		
 		tab.renderizaMurosInternos();
+		
+		tab.inserirBuracos(28);
 
 		tab.insereAgente();
-
-		tab.inserirBuracos(28);
 
 		tab.moVimentaAgente("^");
 
