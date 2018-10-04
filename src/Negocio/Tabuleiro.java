@@ -1,9 +1,13 @@
 package Negocio;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Tabuleiro {
 
+	private ArrayList<Bau> baulist;
+	private Porta door;
+	private ArrayList<SacoMoeda> lisSacos;
 	private String[][] matriz;
 	private int posicaoXAgente = 0;
 	private int posicaoYAgente = 0;
@@ -12,12 +16,45 @@ public class Tabuleiro {
 	private Random random = new Random();
 
 	public Tabuleiro(int tamanho) {
+
 		this.matriz = new String[tamanho][tamanho];
 		for (int i = 0; i < matriz.length; i++) {
 			for (int j = 0; j < matriz.length; j++) {
 				matriz[i][j] = "-";
 			}
 		}
+	}
+
+	public Porta getPorta() {
+		return this.door;
+	}
+
+	public ArrayList<Bau> getListBaus() {
+		baulist = new ArrayList<>();
+
+		for (int i = 0; i < matriz.length; i++) {
+			for (int j = 0; j < matriz.length; j++) {
+				if (matriz[j][i].equals("k")) {
+					baulist.add(new Bau(j, i, 0));
+				}
+			}
+		}
+
+		return baulist;
+	}
+
+	public ArrayList<SacoMoeda> getSacos() {
+		lisSacos = new ArrayList<>();
+
+		for (int i = 0; i < matriz.length; i++) {
+			for (int j = 0; j < matriz.length; j++) {
+				if (matriz[j][i].equals("S")) {
+					lisSacos.add(new SacoMoeda(this.random.nextInt(100), j, i));
+				}
+			}
+		}
+
+		return lisSacos;
 	}
 
 	public void mostrarTabuleiro() {
@@ -81,9 +118,10 @@ public class Tabuleiro {
 
 	public void renderizaMurosInternos() {
 
-		if (matriz[matriz.length - 1][0].equals("M")
-				|| matriz[matriz.length - 1][0].equals("D") && matriz[matriz.length - 1][matriz.length - 1].equals("M")
-				|| matriz[matriz.length - 1][matriz.length - 1].equals("D")) {
+		int ultiPos = matriz.length - 1;
+
+		if ((matriz[0][ultiPos].equals("M") || matriz[0][ultiPos].equals("D"))
+				&& (matriz[ultiPos][ultiPos].equals("M") || matriz[ultiPos][ultiPos].equals("D"))) {
 
 			for (int i = 0; i < 5; i++) {
 				matriz[matriz.length - 4][i] = "M";
@@ -97,72 +135,71 @@ public class Tabuleiro {
 				matriz[i][matriz.length - 4] = "M";
 			}
 
-			for (int i = 1; i < 6; i++) {
-				matriz[i][matriz.length - 1] = "M";
+			for (int i = 0; i < 5; i++) {
+				matriz[8][i] = "M";
 			}
 
 		}
 
-		if (matriz[0][0].equals("M") || matriz[0][0].equals("D") && matriz[0][matriz.length - 1].equals("M")
-				|| matriz[0][matriz.length - 1].equals("D")) {
+		if ((matriz[0][0].equals("M") || matriz[0][0].equals("D"))
+				&& (matriz[ultiPos][0].equals("M") || matriz[ultiPos][0].equals("D"))) {
 
-			for (int i = matriz.length - 1; i < 5; i--) {
-				matriz[i][matriz.length - 1] = "M";
+			for (int i = ultiPos; i > 4; i--) {
+				matriz[matriz.length - 4][i] = "M";
 			}
 
 			for (int i = 0; i < 5; i++) {
-				matriz[matriz.length - 7][i] = "M";
-			}
-
-			for (int i = matriz.length - 1; i < 5; i--) {
-				matriz[i][matriz.length - 4] = "M";
+				matriz[i][ultiPos - 4] = "M";
 			}
 
 			for (int i = 1; i < 6; i++) {
-				matriz[i][0] = "M";
+				matriz[i][2] = "M";
+			}
+
+			for (int i = ultiPos; i > 4; i--) {
+				matriz[ultiPos - 1][i] = "M";
 			}
 
 		}
 
-		if (matriz[0][matriz.length - 1].equals("M")
-				|| matriz[0][matriz.length - 1].equals("D") && matriz[matriz.length - 1][matriz.length - 1].equals("M")
-				|| matriz[matriz.length - 1][matriz.length - 1].equals("D")) {
+		if ((matriz[0][0].equals("M") || matriz[0][0].equals("D"))
+				&& (matriz[0][ultiPos].equals("M") || matriz[0][ultiPos].equals("D"))) {
 
-			for (int i = 0; i < 5; i++) {
+			for (int i = ultiPos; i > 4; i--) {
 				matriz[i][1] = "M";
 			}
 
 			for (int i = 0; i < 5; i++) {
-				matriz[matriz.length - 4][i] = "M";
+				matriz[2][i] = "M";
 			}
 
-			for (int i = 0; i < 5; i++) {
-				matriz[matriz.length - 4][i] = "M";
+			for (int i = ultiPos; i > 4; i--) {
+				matriz[i][ultiPos - 1] = "M";
 			}
 
-			for (int i = 1; i < 6; i++) {
-				matriz[matriz.length - 2][i] = "M";
+			for (int i = ultiPos; i > 4; i--) {
+				matriz[3][i] = "M";
 			}
 
 		}
 
-		if (matriz[0][0].equals("M") || matriz[0][0].equals("D") && matriz[matriz.length - 1][0].equals("M")
-				|| matriz[matriz.length - 1][0].equals("D")) {
+		if ((matriz[ultiPos][0].equals("M") || matriz[ultiPos][0].equals("D"))
+				&& (matriz[ultiPos][ultiPos].equals("M") || matriz[ultiPos][ultiPos].equals("D"))) {
 
 			for (int i = 0; i < 5; i++) {
-				matriz[i][3] = "M";
+				matriz[ultiPos - 3][i] = "M";
 			}
 
-			for (int i = matriz.length - 1; i < 5; i--) {
-				matriz[i][matriz.length - 3] = "M";
+			for (int i = 1; i < 6; i++) {
+				matriz[3][i] = "M";
 			}
 
-			for (int i = matriz.length - 1; i < 5; i--) {
-				matriz[i][matriz.length - 4] = "M";
+			for (int i = 0; i < 5; i++) {
+				matriz[i][6] = "M";
 			}
 
-			for (int i = matriz.length - 3; i < 5; i--) {
-				matriz[matriz.length - 5][i] = "M";
+			for (int i = 1; i < 6; i++) {
+				matriz[i][ultiPos] = "M";
 			}
 
 		}
@@ -170,6 +207,8 @@ public class Tabuleiro {
 	}
 
 	public void randomizaMuroePorta() {
+
+		door = new Porta(this.posicaoXPorta, this.posicaoYPorta);
 		int result = this.random.nextInt(4);
 		int r = this.random.nextInt(this.matriz.length);
 
@@ -223,13 +262,18 @@ public class Tabuleiro {
 		do {
 			xis = this.random.nextInt(this.matriz.length);
 			ips = this.random.nextInt(this.matriz.length);
-		} while (!this.matriz[xis][ips].equals("-") && !this.matriz[xis][ips].equals("D")
-				&& !this.matriz[xis][ips].equals("M"));
+		} while (!(this.matriz[xis][ips].equals("-")) & (this.matriz[xis][ips].equals("D"))
+				& (this.matriz[xis][ips].equals("M")) & (this.matriz[xis][ips].equals("B"))
+				& (this.matriz[xis][ips].equals("k")) & (this.matriz[xis][ips].equals("S")));
 
 		this.matriz[xis][ips] = "A";
 
 		this.posicaoXAgente = ips;
 		this.posicaoYAgente = xis;
+
+		System.out.println("Posicao do agente: " + posicaoAgente());
+		System.out.println("Posicao porta : " + posicaoPorta());
+		System.out.println();
 
 	}
 
@@ -255,158 +299,43 @@ public class Tabuleiro {
 
 		int x = 0;
 		int y = 0;
+		int tamMat = this.matriz.length;
 
 		for (int i = 0; i < num; i++) {
-			x = this.random.nextInt(this.matriz.length);
-			y = this.random.nextInt(this.matriz.length);
+			do {
 
-			if (!this.matriz[x][y].equals("-growing") && !this.matriz[x][y].equals("M")
-					&& !this.matriz[x][y].equals("D") && !this.matriz[x][y].equals("B")
-					&& !this.matriz[x][y].equals("A") && visinhosContem(y, x, "B") == false) {
-				this.matriz[x][y] = "B";
+				x = this.random.nextInt(tamMat);
+				y = this.random.nextInt(tamMat);
+
+			} while ((this.matriz[y][x].equals("M")) && (visinhosContem(y, x, "B") == false)
+					&& (this.matriz[y][x].equals("D")));
+
+			if ((!this.matriz[y][x].equals("M")) && (!this.matriz[y][x].equals("D"))
+					&& (visinhosContem(x, y, "B") == false)) {
+				this.matriz[y][x] = "B";
 			}
+
 		}
 
 	}
 
-	public Boolean visinhosContem(int posY, int posX, String msn) {
+	public Boolean visinhosContem(int x, int y, String msn) {
+
+		String[] vis = visinhos(x, y);
+
 		boolean contem = false;
 
-		String[] vetorVisinhos = new String[1];
-		int ultPos = this.matriz.length - 1;
-
-		if (posX == 0 && posY == 0) {// Canto superior esquerdo
-			vetorVisinhos = new String[3];
-			vetorVisinhos[0] = matriz[posX][posY + 1];
-			vetorVisinhos[1] = matriz[posX + 1][posY];
-			vetorVisinhos[2] = matriz[posX + 1][posY + 1];
-			for (int i = 0; i < vetorVisinhos.length; i++) {
-				if (vetorVisinhos[i].equals("B")) {
-					contem = true;
-				}
-			}
-
-		} else {
-			if (posX == ultPos && posY == ultPos) { // Canto inferior direito
-				vetorVisinhos = new String[3];
-				vetorVisinhos[0] = matriz[posX][posY - 1];
-				vetorVisinhos[1] = matriz[posX - 1][posY - 1];
-				vetorVisinhos[2] = matriz[posX - 1][posY];
-				for (int i = 0; i < vetorVisinhos.length; i++) {
-					if (vetorVisinhos[i].equals("B")) {
-						contem = true;
-					}
-				}
-
+		for (int i = 0; i < vis.length; i++) {
+			if (vis[i].equals(msn)) {
+				contem = true;
+				break;
 			} else {
-				if ((posX == 0) && (posY >= 1 && posY <= ultPos - 1)) { // Corredor superior
-					vetorVisinhos = new String[5];
-					vetorVisinhos[0] = matriz[posX][posY - 1];
-					vetorVisinhos[1] = matriz[posX][posY + 1];
-					vetorVisinhos[2] = matriz[posX + 1][posY - 1];
-					vetorVisinhos[3] = matriz[posX + 1][posY];
-					vetorVisinhos[4] = matriz[posX + 1][posY + 1];
-
-					for (int i = 0; i < vetorVisinhos.length; i++) {
-						if (vetorVisinhos[i].equals("B")) {
-							contem = true;
-						}
-					}
-				} else {
-
-					if ((posX >= 1 && posX <= ultPos - 1) && posY == 0) { // Corredor esquerdo
-						vetorVisinhos = new String[5];
-						vetorVisinhos[0] = matriz[posX - 1][posY];
-						vetorVisinhos[1] = matriz[posX - 1][posY + 1];
-						vetorVisinhos[2] = matriz[posX][posY + 1];
-						vetorVisinhos[3] = matriz[posX + 1][posY];
-						vetorVisinhos[4] = matriz[posX + 1][posY + 1];
-
-						for (int i = 0; i < vetorVisinhos.length; i++) {
-							if (vetorVisinhos[i].equals("B")) {
-								contem = true;
-							}
-						}
-					} else {
-						if ((posX == ultPos) && (posY >= 1 && posY <= ultPos - 1)) { // Corredor inferior
-							vetorVisinhos = new String[5];
-							vetorVisinhos[0] = matriz[posX][posY - 1];
-							vetorVisinhos[1] = matriz[posX - 1][posY - 1];
-							vetorVisinhos[2] = matriz[posX - 1][posY];
-							vetorVisinhos[3] = matriz[posX - 1][posY + 1];
-							vetorVisinhos[4] = matriz[posX][posY + 1];
-
-							for (int i = 0; i < vetorVisinhos.length; i++) {
-								if (vetorVisinhos[i].equals("B")) {
-									contem = true;
-								}
-							}
-						} else {
-							if (posX == ultPos && posY == 0) { // Canto inferior esquerdo
-								vetorVisinhos = new String[3];
-								vetorVisinhos[0] = matriz[posX - 1][posY];
-								vetorVisinhos[1] = matriz[posX - 1][posY + 1];
-								vetorVisinhos[2] = matriz[posX][posY + 1];
-								for (int i = 0; i < vetorVisinhos.length; i++) {
-									if (vetorVisinhos[i].equals("B")) {
-										contem = true;
-									}
-								}
-							} else {
-								if (posX == 0 && posY == ultPos) { // Canto superior direito
-									vetorVisinhos = new String[3];
-									vetorVisinhos[0] = matriz[posX][posY - 1];
-									vetorVisinhos[1] = matriz[posX + 1][posY - 1];
-									vetorVisinhos[2] = matriz[posX + 1][posY];
-
-									for (int i = 0; i < vetorVisinhos.length; i++) {
-										if (vetorVisinhos[i].equals("B")) {
-											contem = true;
-										}
-									}
-								} else {
-									if ((posX >= 1 && posX <= ultPos - 1) && (posY == ultPos)) { // Corredor direito
-										vetorVisinhos = new String[5];
-										vetorVisinhos[0] = matriz[posX - 1][posY];
-										vetorVisinhos[1] = matriz[posX - 1][posY - 1];
-										vetorVisinhos[2] = matriz[posX][posY - 1];
-										vetorVisinhos[3] = matriz[posX + 1][posY - 1];
-										vetorVisinhos[4] = matriz[posX + 1][posY];
-
-										for (int i = 0; i < vetorVisinhos.length; i++) {
-											if (vetorVisinhos[i].equals("B")) {
-												contem = true;
-											}
-										}
-									} else {
-										if ((posX >= 1 && posX <= ultPos - 1) && (posY >= 1 && posY <= ultPos - 1)) {
-											vetorVisinhos = new String[8];
-											vetorVisinhos[0] = matriz[posX - 1][posY - 1];
-											vetorVisinhos[1] = matriz[posX - 1][posY];
-											vetorVisinhos[2] = matriz[posX - 1][posY + 1];
-											vetorVisinhos[3] = matriz[posX][posY - 1];
-											vetorVisinhos[4] = matriz[posX][posY + 1];
-											vetorVisinhos[5] = matriz[posX + 1][posY - 1];
-											vetorVisinhos[6] = matriz[posX + 1][posY];
-											vetorVisinhos[7] = matriz[posX + 1][posY + 1];
-
-											for (int i = 0; i < vetorVisinhos.length; i++) {
-												if (vetorVisinhos[i].equals("B")) {
-													contem = true;
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
+				contem = false;
 			}
-
 		}
 
 		return contem;
+
 	}
 
 	public String[] visinhos(int posY, int posX) {
@@ -496,18 +425,120 @@ public class Tabuleiro {
 		return vetorVisinhos;
 	}
 
+	public void inseriBaus() {
+		int ultiPos = matriz.length - 1;
+		int num = 0;
+
+		if ((matriz[0][ultiPos].equals("M") || matriz[0][ultiPos].equals("D"))
+				&& (matriz[ultiPos][ultiPos].equals("M") || matriz[ultiPos][ultiPos].equals("D"))) {
+
+			for (int i = 0; i < 4; i++) {
+				num = this.random.nextInt(matriz.length);
+				if (this.matriz[num][ultiPos - 1].equals("-")) {
+					matriz[num][ultiPos - 1] = "k";
+				} else {
+					matriz[i][ultiPos - 1] = "k";
+				}
+
+			}
+
+		}
+
+		if ((matriz[0][0].equals("M") || matriz[0][0].equals("D"))
+				&& (matriz[ultiPos][0].equals("M") || matriz[ultiPos][0].equals("D"))) {
+
+			for (int i = 0; i < 4; i++) {
+				num = this.random.nextInt(matriz.length);
+				if (this.matriz[num][1].equals("-")) {
+					matriz[num][1] = "k";
+				} else {
+					matriz[i][1] = "k";
+				}
+
+			}
+
+		}
+
+		if ((matriz[0][0].equals("M") || matriz[0][0].equals("D"))
+				&& (matriz[0][ultiPos].equals("M") || matriz[0][ultiPos].equals("D"))) {
+
+			for (int i = 0; i < 4; i++) {
+				num = this.random.nextInt(matriz.length);
+				if (this.matriz[1][num].equals("-")) {
+					matriz[1][num] = "k";
+				} else {
+					matriz[1][i] = "k";
+				}
+
+			}
+
+		}
+
+		if ((matriz[ultiPos][0].equals("M") || matriz[ultiPos][0].equals("D"))
+				&& (matriz[ultiPos][ultiPos].equals("M") || matriz[ultiPos][ultiPos].equals("D"))) {
+
+			for (int i = 0; i < 4; i++) {
+				num = this.random.nextInt(matriz.length);
+				if (this.matriz[ultiPos - 1][num].equals("-")) {
+					matriz[ultiPos - 1][num] = "k";
+				} else {
+					matriz[ultiPos - 1][i] = "k";
+
+				}
+
+			}
+
+		}
+	}
+
+	public void inseriSacoMoedas(int qnt) {
+		int x = 0;
+		int y = 0;
+
+		for (int i = 0; i < qnt; i++) {
+
+			do {
+				x = this.random.nextInt(matriz.length);
+				y = this.random.nextInt(matriz.length);
+				if (!this.matriz[x][y].equals("k")
+						& (!this.matriz[x][y].equals("B") & (!this.matriz[x][y].equals("M")))) {
+					matriz[x][y] = "S";
+				}
+
+			} while (this.matriz[x][y].equals("-") & (this.matriz[x][y].equals("B")) & (this.matriz[x][y].equals("M"))
+					& (this.matriz[x][y].equals("k")));
+
+		}
+
+	}
+
 	public static void main(String[] args) {
 		Tabuleiro tab = new Tabuleiro(10);
-		
+
 		tab.randomizaMuroePorta();
-		
+		tab.mostrarTabuleiro();
+		System.out.println("\n=======");
 		tab.renderizaMurosInternos();
-		
-		tab.inserirBuracos(28);
-
+		tab.mostrarTabuleiro();
+		System.out.println("\n=======");
+		tab.inserirBuracos(12);
+		tab.mostrarTabuleiro();
+		System.out.println("\n=======");
+		tab.inseriBaus();
+		tab.mostrarTabuleiro();
+		System.out.println("\n=======");
+		tab.inseriSacoMoedas(28);
+		tab.mostrarTabuleiro();
+		System.out.println("\n=======");
 		tab.insereAgente();
+		tab.mostrarTabuleiro();
+		System.out.println("\n=======");
 
-		tab.moVimentaAgente("^");
+		ArrayList<SacoMoeda> lista = tab.getSacos();
+		for (int i = 0; i < lista.size(); i++) {
+			System.out.println("Position: " + lista.get(i).getPositionY() + " " + lista.get(i).getPositionX()
+					+ " Valor: " + lista.get(i).getValue());
+		}
 
 	}
 

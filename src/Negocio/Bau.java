@@ -2,13 +2,15 @@ package Negocio;
 
 public class Bau {
 	private int value;
-	
+
 	private int xPosition, yPosition;
 
 	/**
 	 * @param value
 	 */
-	public Bau() {
+	public Bau(int x, int y, int valu) {
+		this.xPosition = x;
+		this.yPosition = y;
 		this.value = 0;
 	}
 
@@ -19,11 +21,11 @@ public class Bau {
 	public void recebeSacos(int value) {
 		this.value = value;
 	}
-	
+
 	public int retornaValue() {
 		return this.value;
 	}
-	
+
 	public void setPositions(int x, int y) {
 		this.xPosition = x;
 		this.yPosition = y;
@@ -36,8 +38,5 @@ public class Bau {
 	public int getPositionY() {
 		return this.yPosition;
 	}
-	
-	
-	
-	
+
 }
