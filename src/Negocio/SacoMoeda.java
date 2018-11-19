@@ -5,7 +5,7 @@ public class SacoMoeda {
 
 	private int xPosition, yPosition;
 
-	public SacoMoeda(int valor, int xpos, int ypos) {
+	public SacoMoeda(int valor, int ypos, int xpos) {
 		this.value = valor;
 		this.xPosition = xpos;
 		this.yPosition = ypos;
